@@ -3,8 +3,8 @@ The steps include cloning the source code, running unit tests, packaging the app
 
 ## Step 1 : Clone the Repository
 '''bash 
- git clone https://github.com/Ibrahim-Adel15/calculator-gradle.git
- cd calculator-gradle'''
+git clone https://github.com/Ibrahim-Adel15/calculator-gradle.git
+cd calculator-gradle
 
 <img width="1127" height="592" alt="image" src="https://github.com/user-attachments/assets/d07aaa96-8a11-4c46-8b7a-2c5d82c28cf4" />
 
