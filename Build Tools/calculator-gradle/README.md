@@ -1,8 +1,7 @@
-# Build Tools with Maven and Gradle
-A complete build workflows for both **Maven** and **Gradle** Java applications.
+# Build Tools with  Gradle
 The steps include cloning the source code, running unit tests, packaging the applications, and running them.
 
-## Step 1 :Clone the Repository
+## Step 1 : Clone the Repository
 '''git clone https://github.com/Ibrahim-Adel15/calculator-gradle.git
  cd calculator-gradle'''
 
