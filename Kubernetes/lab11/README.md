@@ -30,7 +30,7 @@ kubectl describe resourcequota resource-pod -n ivolve
 
 
 
-## Step 5: Test Enforcement
+## Step 3: Test Enforcement
 
 Create a deployment requesting 3 replicas, to prove only 2 are admitted:
 
