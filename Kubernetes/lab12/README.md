@@ -3,7 +3,7 @@
 ## Objective
 Store non-sensitive MySQL configuration in a ConfigMap and sensitive MySQL credentials in a Secret
 
-##Refering to lab 9
+## Refering to lab 9
 
 # to encode using powershell
 
