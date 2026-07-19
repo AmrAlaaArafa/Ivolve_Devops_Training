@@ -1,4 +1,4 @@
-<img width="1447" height="177" alt="image" src="https://github.com/user-attachments/assets/c3827968-a8df-420a-8ffb-d20419cc8d59" /># Lab 14: StatefulSet with Headless Service
+# Lab 14: StatefulSet with Headless Service
 
 ## Objective
 Deploy MySQL as a StatefulSet with a headless service, backed by a PersistentVolumeClaim, consuming its root password from a Secret, and tolerating the `node=worker:NoSchedule` taint .
