@@ -63,6 +63,13 @@ spec:
           image: amralaa21/kubernetes-app:1
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"    
           envFrom:
             - configMapRef:
                 name: mysql-config
