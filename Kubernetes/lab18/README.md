@@ -20,7 +20,7 @@ kubectl apply -f allow-app-to-mysql.yml
 ## Verify it
 
 ```bash
-kubectl describe networkpolicy allow-app-to-mysql -n ivolve
+        kubectl describe networkpolicy allow-app-to-mysql -n ivolve
 ```
 <img width="1302" height="347" alt="image" src="https://github.com/user-attachments/assets/bad3bcb9-2da5-4520-9aae-fa694ccc3ccc" />
 

@@ -48,7 +48,6 @@ mysql -h "$DB_HOST" -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXIS
 
 ```bash
 kubectl get pod -n ivolve
-kubectl get deployment nodejs-app -n ivolve
 ```
 <img width="1202" height="187" alt="image" src="https://github.com/user-attachments/assets/dbde4c39-3dfd-444d-b9a2-6c04b60b7682" />
 
