@@ -6,7 +6,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir("Jenkins/lab21-22") {
+                dir("Docker/lab9") {
                     sh "docker build -t amralaa21/kubernetes-app:$BUILD_NUMBER ."
                 }
             }
