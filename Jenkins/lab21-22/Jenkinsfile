@@ -46,7 +46,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'serviceaccount-token',variable:'TOKEN')]) {
                     sh """
                       
-                        kubectl apply -f Kubernetes/lab15-16/nodejs-deployment.yml --server=https://192.168.49.2 --token=${TOKEN} --insecure-skip-tls-verify=true --validate=false
+                        kubectl apply -f Kubernetes/lab15-16/nodejs-deployment.yml --server=https://192.168.49.2:8443 --token=${TOKEN} --insecure-skip-tls-verify=true --validate=false
                     """
                 }
             }
