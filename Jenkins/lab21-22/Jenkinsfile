@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+  
+
+    stages {
+
+        stage('Build Docker Image') {
+            steps {
+                dir("Jenkins/lab21-22") {
+                    sh "docker build -t amralaa21/kubernetes-app:$BUILD_NUMBER ."
+                }
+            }
+        }
+
+        stage('Push Image to Docker Hub') {
+            steps {
+                  withCredentials([usernamePassword(credentialsId:'dockerhub',usernameVariable:'DOCKER_USER',passwordVariable:'DOCKER_PASS')]){
+
+              sh"""
+                    docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+                    docker push  amralaa21/kubernetes-app:$BUILD_NUMBER
+              """
+                  }
+               
+            }
+        }
+
+        stage('Delete Image Locally') {
+            steps {
+                sh "docker rmi amralaa21/kubernetes-app:$BUILD_NUMBER || true"
+            }
+        }
+
+        stage('Update Deployment Manifest') {
+            steps {
+                dir("Kubernetes/lab15-16") {
+                    sh """
+                        sed -i "s|image .*|image: amralaa21/kubernetes-app:$BUILD_NUMBER|" nodejs-deployment.yml
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([string(credentialsId: 'serviceaccount-token',variable:'TOKEN')]) {
+                    sh """
+                      
+                        kubectl apply -f Kubernetes/lab15-16/nodejs-deployment.yml --server-https://127.0.0.1:3177 --token=${TOKEN} --insecure-skip-tls-verify=true --validate=false
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline finished ."
+
+        }
+        success {
+            echo "Deployment succeeded."
+        }
+        failure {
+            echo "Pipeline failed — check the stage logs above for details."
+        }
+    }
+}
