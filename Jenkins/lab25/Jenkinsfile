@@ -54,7 +54,7 @@ pipeline {
             steps {
                 dir("Kubernetes/lab15-16") {
                     withCredentials([string(
-                        credentialsId: 'github-token', 
+                        credentialsId: 'github', 
                         variable: 'GITHUB_TOKEN'
                     )]) {
                         sh """
