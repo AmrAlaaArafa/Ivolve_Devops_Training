@@ -11,60 +11,63 @@ pipeline {
 
     stages {
 
-        stage(' Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
-              dir("Docker/lab9") {
+                dir("Docker/lab9") {
                     sh "docker build -t $FULL_IMAGE ."
                 }
             }
         }
 
-        stage(' Push Image to Docker Hub') {
+        stage('Push Image to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId:'dockerhub',usernameVariable:'DOCKER_USER',passwordVariable:'DOCKER_PASS')]){
-
-              sh"""
-                    docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-                    docker push  $FULL_IMAGE
-              """
-            }
-        }
-
-        stage('4. Delete Image Locally') {
-            steps {
-                sh "docker rmi $FULL_IMAGE || true"
-
-            }
-        }
-
-        stage(' Edit deployment.yaml') {
-            steps {
-                 dir("Kubernetes/lab15-16") {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DH_USER',
+                    passwordVariable: 'DH_PASS'
+                )]) {
                     sh """
-                        sed -i "s|image .*|image: $FULL_IMAGE|" nodejs-deployment.yml
-                        cp nodjs-deployment.yml /main/Jenkins/lab25
+                        docker login -u "$DH_USER" -p "$DH_PASS"
+                        docker push $FULL_IMAGE
                     """
                 }
             }
         }
 
-        stage(' Push Updated Manifests to GitHub') {
+        stage('Delete Image Locally') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'github',
-                    usernameVariable: 'GIT_USER',
-                    passwordVariable: 'GIT_PASS'
-                )]) {
+                sh "docker rmi $FULL_IMAGE || true"
+            }
+        }
+
+        stage('Edit deployment.yaml') {
+            steps {
+                dir("Kubernetes/lab15-16") {
                     sh """
-                        git config user.name "Jenkins"
-                        git config user.email "jenkins@ci-cd.local"
-                        git add  nodjs-deployment.yml
-                        git commit -m "ci: update deployment image to ${IMAGE_TAG} [skip ci]" || echo "No changes to commit"
-                        git push https://${GIT_USER}:${GIT_PASS}@github.com/${REPO_NAME}.git HEAD:main
+                        sed -i "s|image: .*|image: $FULL_IMAGE|" nodejs-deployment.yml
                     """
+                }
+            }
+        }
+
+        stage('Push Updated Manifests to GitHub') {
+            steps {
+                dir("Kubernetes/lab15-16") {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'github',
+                        usernameVariable: 'GIT_USER',
+                        passwordVariable: 'GIT_PASS'
+                    )]) {
+                        sh """
+                            git config user.name "Jenkins"
+                            git config user.email "jenkins@ci-cd.local"
+                            git add nodejs-deployment.yml
+                            git commit -m "ci: update deployment image to ${IMAGE_TAG} [skip ci]" || echo "No changes to commit"
+                            git push https://${GIT_USER}:${GIT_PASS}@github.com/${REPO_NAME} HEAD:main
+                        """
+                    }
                 }
             }
         }
     }
-}
 }
