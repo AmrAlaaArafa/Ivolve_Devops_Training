@@ -5,7 +5,8 @@ metadata:
   namespace: ivolve
 spec:
   rules:
-    - host: ivolve.com
+    - host: ivolvee.com
+    #- host: ivolve.com // to test ingress in argocd
       http:
         paths:
           - path: /
