@@ -45,6 +45,7 @@ pipeline {
                 dir("Kubernetes/lab15-16") {
                     sh """
                         sed -i "s|image: .*|image: $FULL_IMAGE|" nodejs-deployment.yml
+                        cp nodejs-deployment-yml ../../Jenkins/lab25
                     """
                 }
             }
