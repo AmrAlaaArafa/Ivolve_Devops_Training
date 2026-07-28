@@ -25,7 +25,7 @@ spec:
       #NOTE: i will comment the initcontainer now to test the application through argocd
       # initContainers:
       #   - name: db-init
-      #     image: amralaa21/kubernetes-app:v8
+      #     image: amralaa21/kubernetes-app:v9
       #     env:
       #       - name: DB_HOST
       #         valueFrom:
@@ -61,7 +61,7 @@ spec:
       #           mysql -h "$DB_HOST" -u root -p"$MYSQL_ROOT_PASSWORD" < /tmp/init.sql                               
       containers:
         - name: nodejs-app
-          image: amralaa21/kubernetes-app:v8
+          image: amralaa21/kubernetes-app:v9
           ports:
             - containerPort: 3000
           resources:
