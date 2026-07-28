@@ -24,7 +24,7 @@ spec:
         - name: dockerhub-secret
       initContainers:
         - name: db-init
-          image: amralaa21/kubernetes-app:v6
+          image: amralaa21/kubernetes-app:v8
           env:
             - name: DB_HOST
               valueFrom:
@@ -60,7 +60,7 @@ spec:
                 mysql -h "$DB_HOST" -u root -p"$MYSQL_ROOT_PASSWORD" < /tmp/init.sql                               
       containers:
         - name: nodejs-app
-          image: amralaa21/kubernetes-app:v6
+          image: amralaa21/kubernetes-app:v8
           ports:
             - containerPort: 3000
           resources:
