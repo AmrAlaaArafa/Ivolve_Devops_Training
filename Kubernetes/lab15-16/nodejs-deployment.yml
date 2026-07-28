@@ -22,42 +22,43 @@ spec:
           effect: "NoSchedule"
       imagePullSecrets:
         - name: dockerhub-secret
-      initContainers:
-        - name: db-init
-          image: amralaa21/kubernetes-app:v8
-          env:
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: DB_HOST
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: DB_PASSWORD
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: MYSQL_ROOT_PASSWORD
-          command:
-            - sh
-            - -c
-            - |
-                set -e
-                cat << EOF > /tmp/init.sql
-                CREATE DATABASE IF NOT EXISTS ivolve;
-                CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
-                GRANT ALL PRIVILEGES ON ivolve.* TO '${DB_USER}'@'%';
-                FLUSH PRIVILEGES;
-                EOF
-                mysql -h "$DB_HOST" -u root -p"$MYSQL_ROOT_PASSWORD" < /tmp/init.sql                               
+      #NOTE: i will comment the initcontainer now to test the application through argocd
+      # initContainers:
+      #   - name: db-init
+      #     image: amralaa21/kubernetes-app:v8
+      #     env:
+      #       - name: DB_HOST
+      #         valueFrom:
+      #           configMapKeyRef:
+      #             name: mysql-config
+      #             key: DB_HOST
+      #       - name: DB_USER
+      #         valueFrom:
+      #           configMapKeyRef:
+      #             name: mysql-config
+      #             key: DB_USER
+      #       - name: DB_PASSWORD
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: mysql-secret
+      #             key: DB_PASSWORD
+      #       - name: MYSQL_ROOT_PASSWORD
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: mysql-secret
+      #             key: MYSQL_ROOT_PASSWORD
+      #     command:
+      #       - sh
+      #       - -c
+      #       - |
+      #           set -e
+      #           cat << EOF > /tmp/init.sql
+      #           CREATE DATABASE IF NOT EXISTS ivolve;
+      #           CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+      #           GRANT ALL PRIVILEGES ON ivolve.* TO '${DB_USER}'@'%';
+      #           FLUSH PRIVILEGES;
+      #           EOF
+      #           mysql -h "$DB_HOST" -u root -p"$MYSQL_ROOT_PASSWORD" < /tmp/init.sql                               
       containers:
         - name: nodejs-app
           image: amralaa21/kubernetes-app:v8
