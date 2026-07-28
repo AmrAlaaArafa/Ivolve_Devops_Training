@@ -53,17 +53,16 @@ pipeline {
         stage('Push Updated Manifests to GitHub') {
             steps {
                 dir("Kubernetes/lab15-16") {
-                    withCredentials([usernamePassword(
-                        credentialsId: 'github',
-                        usernameVariable: 'GIT_USER',
-                        passwordVariable: 'GIT_PASS'
+                    withCredentials([string(
+                        credentialsId: 'github-token', 
+                        variable: 'GITHUB_TOKEN'
                     )]) {
                         sh """
                             git config user.name "Jenkins"
                             git config user.email "jenkins@ci-cd.local"
                             git add nodejs-deployment.yml
                             git commit -m "ci: update deployment image to ${IMAGE_TAG} [skip ci]" || echo "No changes to commit"
-                            git push https://${GIT_USER}:${GIT_PASS}@github.com/${REPO_NAME} HEAD:main
+                            git push https://${GITHUB_TOKEN}@github.com/${REPO_NAME} HEAD:main
                         """
                     }
                 }
